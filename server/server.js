@@ -5,8 +5,6 @@ const fs = require('fs');
 
 let app = express();
 
-// app.use(bodyParser.json());
-
 app.use((req, res, next) => {
     console.log(req.url);
     next();
@@ -29,7 +27,10 @@ app.post('/name-input-form', (req, res) => {
 })
 
 app.use('/formsubmissions', (req, res) => {
-    fs.readFile('forms.json')
+    fs.readFile('forms.json', (err, data) => {
+        if (err) throw err;
+        res.send(data.toString());
+    })
 })
 
 app.use(express.static(path.join(__dirname, '../public')));
